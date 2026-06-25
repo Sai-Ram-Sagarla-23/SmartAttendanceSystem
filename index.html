@@ -22,7 +22,7 @@
   --r:12px;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
-
+ 
 header{
   background:var(--s1);border-bottom:1px solid var(--border);
   padding:0 24px;display:flex;align-items:center;gap:14px;height:56px;flex-shrink:0;
@@ -33,7 +33,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .live-dot span{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .live-dot.on span{background:var(--red);box-shadow:0 0 0 0 rgba(247,88,88,.6);animation:livepulse 1.5s infinite}
 @keyframes livepulse{0%{box-shadow:0 0 0 0 rgba(247,88,88,.6)}70%{box-shadow:0 0 0 7px rgba(247,88,88,0)}100%{box-shadow:0 0 0 0 rgba(247,88,88,0)}}
-
+ 
 #status-bar{
   background:var(--s2);border-bottom:1px solid var(--border);
   padding:8px 24px;font-size:.77rem;color:var(--muted);
@@ -42,19 +42,19 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .sdot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0;transition:.4s}
 .sdot.ok{background:var(--green)}.sdot.spin{background:var(--accent);animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
+ 
 .main{display:grid;grid-template-columns:1fr 320px;flex:1;min-height:0}
-
+ 
 /* CAMERA SIDE */
 .cam-side{display:flex;flex-direction:column;background:#000;position:relative;overflow:hidden}
 .cam-wrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 #video{width:100%;height:100%;object-fit:cover;display:none}
 #overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-
+ 
 .placeholder{text-align:center;color:var(--muted);padding:40px}
 .placeholder .big{font-size:72px;opacity:.2;margin-bottom:16px}
 .placeholder p{font-size:.9rem}
-
+ 
 /* SCAN RING */
 .scan-ring{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -70,7 +70,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 }
 @keyframes ringpulse{0%,100%{border-color:rgba(79,142,247,.2)}50%{border-color:rgba(79,142,247,.5)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-
+ 
 /* BIG RESULT OVERLAY */
 .result-overlay{
   position:absolute;bottom:0;left:0;right:0;
@@ -87,7 +87,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 }
 .res-badge.present{background:rgba(52,201,123,.18);color:var(--green);border:1px solid rgba(52,201,123,.35)}
 .res-badge.unknown{background:rgba(247,88,88,.18);color:var(--red);border:1px solid rgba(247,88,88,.35)}
-
+ 
 .cam-controls{
   background:var(--s1);border-top:1px solid var(--border);
   padding:14px 20px;display:flex;gap:10px;align-items:center;flex-shrink:0;
@@ -100,7 +100,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .btn-red:hover:not(:disabled){opacity:.85}
 .btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}
 .btn-outline:hover{color:var(--text);border-color:var(--muted)}
-
+ 
 /* RIGHT SIDE */
 .info-side{
   background:var(--s1);border-left:1px solid var(--border);
@@ -114,7 +114,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .itab.on{color:var(--accent);border-bottom-color:var(--accent)}
 .ipane{display:none;flex:1;overflow-y:auto;padding:16px;flex-direction:column;gap:12px}
 .ipane.on{display:flex}
-
+ 
 /* Stats */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat-box{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
@@ -122,7 +122,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
 .stat-box.g .val{color:var(--green)}
 .stat-box.b .val{color:var(--accent)}
-
+ 
 /* Log */
 .log-item{
   background:var(--s2);border:1px solid var(--border);border-radius:8px;
@@ -133,7 +133,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .log-time{font-size:.7rem;color:var(--muted);text-align:right}
 .pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:700}
 .pill.p{background:rgba(52,201,123,.18);color:var(--green)}
-
+ 
 /* Students pane */
 .stu-chip{
   background:var(--s2);border:1px solid var(--border);border-radius:8px;
@@ -142,7 +142,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 .stu-av{width:34px;height:34px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;background:var(--s3)}
 .stu-roll{font-size:.85rem;font-weight:700}
 .stu-meta{font-size:.7rem;color:var(--muted)}
-
+ 
 /* Load overlay */
 #load-overlay{
   position:fixed;inset:0;background:var(--bg);z-index:100;
@@ -155,7 +155,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 }
 #load-overlay p{font-size:.88rem;color:var(--muted)}
 #load-overlay strong{font-size:1.1rem;color:var(--text)}
-
+ 
 /* MARKED animation */
 @keyframes markedFlash{
   0%{background:rgba(52,201,123,0)}
@@ -163,7 +163,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
   100%{background:rgba(52,201,123,0)}
 }
 .marked-flash{animation:markedFlash .8s ease}
-
+ 
 /* No-data screen */
 #no-data{
   position:fixed;inset:0;background:var(--bg);z-index:99;
@@ -173,7 +173,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 #no-data .icon{font-size:64px;opacity:.3}
 #no-data h2{font-size:1.1rem;font-weight:700}
 #no-data p{font-size:.83rem;color:var(--muted);max-width:340px;line-height:1.6}
-
+ 
 /* toast */
 .toast{
   position:fixed;bottom:20px;right:20px;background:var(--s2);border:1px solid var(--border);
@@ -183,20 +183,20 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
 @keyframes sup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .toast.hide{animation:sdn .3s ease forwards}
 @keyframes sdn{to{opacity:0;transform:translateY(10px)}}
-
+ 
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
 <body>
-
+ 
 <!-- LOADING OVERLAY -->
 <div id="load-overlay">
   <div class="spinner"></div>
   <strong>Setting up Face Recognition</strong>
   <p id="load-text">Loading models…</p>
 </div>
-
+ 
 <!-- NO DATA SCREEN -->
 <div id="no-data">
   <div class="icon">📭</div>
@@ -204,18 +204,18 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
   <p>The admin hasn't trained any students yet, or the <code>students.json</code> file hasn't been loaded. Please ask your admin to register students and export the data.</p>
   <p style="font-size:.75rem;color:var(--muted);margin-top:8px">If you're the admin, open <strong>admin.html</strong> to get started.</p>
 </div>
-
+ 
 <header>
   <div class="logo">🎓</div>
   <h1>Face Attendance</h1>
   <div class="live-dot" id="live-dot"><span></span><span id="live-label">Camera off</span></div>
 </header>
-
+ 
 <div id="status-bar">
   <div class="sdot spin" id="sdot"></div>
   <span id="stext">Initializing…</span>
 </div>
-
+ 
 <div class="main">
   <!-- CAMERA -->
   <div class="cam-side">
@@ -239,7 +239,7 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
       <span id="conf-text" style="font-size:.78rem;color:var(--muted);flex:1;text-align:right"></span>
     </div>
   </div>
-
+ 
   <!-- INFO PANEL -->
   <div class="info-side">
     <div class="info-tabs">
@@ -247,12 +247,12 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
       <div class="itab" onclick="iTab('stats',this)">📊 Stats</div>
       <div class="itab" onclick="iTab('students',this)">👥 Students</div>
     </div>
-
+ 
     <!-- LOG -->
     <div class="ipane on" id="ipane-log">
       <div id="log-list"><div style="color:var(--muted);font-size:.82rem;text-align:center;padding:24px">No attendance marked yet.</div></div>
     </div>
-
+ 
     <!-- STATS -->
     <div class="ipane" id="ipane-stats">
       <div class="stat-grid">
@@ -262,20 +262,20 @@ header h1{font-size:.95rem;font-weight:700;flex:1}
         <div class="stat-box"><div class="val" id="st-scans" style="color:var(--muted)">0</div><div class="lbl">Face Scans</div></div>
       </div>
     </div>
-
+ 
     <!-- STUDENTS -->
     <div class="ipane" id="ipane-students">
       <div id="stu-list-view"></div>
     </div>
   </div>
 </div>
-
+ 
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────────────────
 // How long (ms) before the same student can be marked again
 const COOLDOWN_MS = 10 * 1000; // 10 seconds
 const MATCH_THRESHOLD = 0.5;   // lower = stricter
-
+ 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let students = [];      // loaded from localStorage (written by admin)
 let attendLog = [];     // today's log (also written to localStorage)
@@ -284,28 +284,27 @@ let stream = null;
 let scanLoop = null;
 let lastMarked = {};    // {roll: timestamp}
 let scanCount = 0;
-
+ 
 // ── BOOT ─────────────────────────────────────────────────────────────────────
 window.addEventListener('load', () => {
-  // poll for face-api.js
   const poll = setInterval(() => {
     if (window.faceapi) { clearInterval(poll); boot(); }
   }, 200);
 });
-
+ 
 async function boot() {
   setS('spin', 'Loading face recognition models…');
   setLoad('Loading AI models (first time ~3 MB)…');
   try {
-    const URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model';
+    const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model';
     await Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri(URL),
-      faceapi.nets.faceLandmark68TinyNet.loadFromUri(URL),
-      faceapi.nets.faceRecognitionNet.loadFromUri(URL),
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+      faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODEL_URL),
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
     ]);
     modelsLoaded = true;
     setLoad('Loading student data…');
-    loadStudents();
+    await loadStudents();   // ← await the fetch
     loadLog();
     hideOverlay();
     if (!students.length) {
@@ -318,20 +317,37 @@ async function boot() {
     console.error(e);
   }
 }
-
+ 
 function setLoad(t) { document.getElementById('load-text').textContent = t; }
 function hideOverlay() { document.getElementById('load-overlay').style.display = 'none'; }
-
+ 
 // ── DATA ─────────────────────────────────────────────────────────────────────
-function loadStudents() {
+async function loadStudents() {
+  // 1️⃣ Try fetching students.json from the same folder (GitHub Pages / any host)
+  try {
+    const res = await fetch('./students.json', { cache: 'no-cache' });
+    if (res.ok) {
+      const raw = await res.json();
+      students = raw.map(s => ({ ...s, descriptor: new Float32Array(s.descriptor) }));
+      console.log(`✅ Loaded ${students.length} student(s) from students.json`);
+      renderStudentsList();
+      updateStats();
+      return;
+    }
+  } catch(e) {
+    console.log('students.json not found on server, falling back to localStorage…');
+  }
+ 
+  // 2️⃣ Fallback: localStorage (works when admin & student use the same device/browser)
   try {
     const raw = JSON.parse(localStorage.getItem('att_students') || '[]');
     students = raw.map(s => ({ ...s, descriptor: new Float32Array(s.descriptor) }));
+    console.log(`📦 Loaded ${students.length} student(s) from localStorage`);
   } catch(e) { students = []; }
   renderStudentsList();
   updateStats();
 }
-
+ 
 function loadLog() {
   try {
     const raw = JSON.parse(localStorage.getItem('att_log') || '[]');
@@ -342,7 +358,7 @@ function loadLog() {
   renderLog();
   updateStats();
 }
-
+ 
 function saveLog() {
   // merge today's entries with existing (preserve other days)
   try {
@@ -354,7 +370,7 @@ function saveLog() {
     localStorage.setItem('att_log', JSON.stringify(attendLog));
   }
 }
-
+ 
 // ── CAMERA ───────────────────────────────────────────────────────────────────
 async function startCamera() {
   if (!modelsLoaded) return;
@@ -381,7 +397,7 @@ async function startCamera() {
     toast('❌', 'Camera access denied. Please allow camera permission.');
   }
 }
-
+ 
 function stopCamera() {
   if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   clearInterval(scanLoop);
@@ -397,62 +413,62 @@ function stopCamera() {
   setLive(false);
   setS('ok', `Camera stopped. ${students.length} student(s) loaded.`);
 }
-
+ 
 function setLive(on) {
   const d = document.getElementById('live-dot');
   const l = document.getElementById('live-label');
   d.className = 'live-dot' + (on ? ' on' : '');
   l.textContent = on ? 'Live' : 'Camera off';
 }
-
+ 
 // ── SCAN LOOP ─────────────────────────────────────────────────────────────────
 function buildMatcher() {
   const ld = students.map(s => new faceapi.LabeledFaceDescriptors(s.roll, [s.descriptor]));
   return new faceapi.FaceMatcher(ld, MATCH_THRESHOLD);
 }
-
+ 
 function startScan() {
   const vid = document.getElementById('video');
   const cvs = document.getElementById('overlay');
   const ctx = cvs.getContext('2d');
-
+ 
   scanLoop = setInterval(async () => {
     if (!vid.srcObject) return;
     scanCount++;
     updateStats();
-
+ 
     const dets = await faceapi
       .detectAllFaces(vid, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.45 }))
       .withFaceLandmarks(true)
       .withFaceDescriptors();
-
+ 
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-
+ 
     const scaleX = cvs.width / vid.videoWidth;
     const scaleY = cvs.height / vid.videoHeight;
-
+ 
     if (!dets.length) {
       document.getElementById('res-overlay').classList.remove('show');
       document.getElementById('conf-text').textContent = '';
       setS('ok', 'Scanning… No face detected.');
       return;
     }
-
+ 
     const matcher = buildMatcher();
     let bestMatch = null;
-
+ 
     dets.forEach(det => {
       const match = matcher.findBestMatch(det.descriptor);
       const box = det.detection.box;
       const x = box.x * scaleX, y = box.y * scaleY;
       const w = box.width * scaleX, h = box.height * scaleY;
       const known = match.label !== 'unknown';
-
+ 
       // draw box
       ctx.strokeStyle = known ? '#34c97b' : '#f75858';
       ctx.lineWidth = 2.5;
       ctx.strokeRect(x, y, w, h);
-
+ 
       // corner accents
       const cLen = 18, lw = 3;
       ctx.strokeStyle = known ? '#34c97b' : '#f75858';
@@ -467,7 +483,7 @@ function startScan() {
         ctx.lineTo(cx, cy);
         ctx.stroke();
       });
-
+ 
       // label
       const conf = Math.round((1 - match.distance) * 100);
       const label = known ? `${match.label}  ${conf}%` : `Unknown`;
@@ -479,12 +495,12 @@ function startScan() {
       ctx.fill();
       ctx.fillStyle = '#fff';
       ctx.fillText(label, lx + 8, ly + 16);
-
+ 
       if (known && (!bestMatch || match.distance < bestMatch.distance)) {
         bestMatch = { ...match, student: students.find(s => s.roll === match.label), conf };
       }
     });
-
+ 
     if (bestMatch) {
       const { student, conf } = bestMatch;
       showResult(student, conf);
@@ -494,7 +510,7 @@ function startScan() {
     }
   }, 700);
 }
-
+ 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -508,7 +524,7 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
 }
-
+ 
 function showResult(student, conf) {
   document.getElementById('res-roll').textContent = student.roll;
   document.getElementById('res-meta').textContent = `${student.branch} · ${student.year}`;
@@ -519,7 +535,7 @@ function showResult(student, conf) {
   document.getElementById('conf-text').textContent = `Confidence: ${conf}%`;
   setS('ok', `Face detected: ${student.roll} — ${student.branch} · ${student.year}`);
 }
-
+ 
 function showUnknown() {
   document.getElementById('res-roll').textContent = 'Unknown';
   document.getElementById('res-meta').textContent = 'Not in the system';
@@ -530,29 +546,29 @@ function showUnknown() {
   document.getElementById('conf-text').textContent = '';
   setS('ok', 'Unknown face detected.');
 }
-
+ 
 // ── AUTO MARK ────────────────────────────────────────────────────────────────
 function autoMark(student) {
   const now = Date.now();
   const last = lastMarked[student.roll] || 0;
   if (now - last < COOLDOWN_MS) return; // already marked recently
   lastMarked[student.roll] = now;
-
+ 
   const time = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const entry = { roll: student.roll, branch: student.branch, year: student.year, time, ts: new Date().toISOString(), status: 'Present' };
   attendLog.unshift(entry);
   saveLog();
   renderLog();
   updateStats();
-
+ 
   // flash
   document.getElementById('cam-wrap').classList.add('marked-flash');
   setTimeout(() => document.getElementById('cam-wrap').classList.remove('marked-flash'), 800);
-
+ 
   toast('✅', `${student.roll} is PRESENT  ·  ${time}`);
   setS('ok', `✅ ${student.roll} marked PRESENT at ${time}`);
 }
-
+ 
 // ── RENDER ───────────────────────────────────────────────────────────────────
 function renderLog() {
   const el = document.getElementById('log-list');
@@ -572,7 +588,7 @@ function renderLog() {
       </div>
     </div>`).join('');
 }
-
+ 
 function renderStudentsList() {
   const el = document.getElementById('stu-list-view');
   if (!students.length) {
@@ -588,7 +604,7 @@ function renderStudentsList() {
       </div>
     </div>`).join('');
 }
-
+ 
 function updateStats() {
   const presentRolls = [...new Set(attendLog.map(r => r.roll))];
   document.getElementById('st-present').textContent = presentRolls.length;
@@ -597,7 +613,7 @@ function updateStats() {
   document.getElementById('st-pct').textContent = pct + '%';
   document.getElementById('st-scans').textContent = scanCount;
 }
-
+ 
 // ── UI ───────────────────────────────────────────────────────────────────────
 function iTab(name, el) {
   document.querySelectorAll('.itab').forEach(t => t.classList.remove('on'));
@@ -605,13 +621,13 @@ function iTab(name, el) {
   el.classList.add('on');
   document.getElementById('ipane-' + name).classList.add('on');
 }
-
+ 
 function setS(s, msg) {
   const d = document.getElementById('sdot');
   d.className = 'sdot' + (s === 'ok' ? ' ok' : s === 'spin' ? ' spin' : '');
   document.getElementById('stext').textContent = msg;
 }
-
+ 
 let _tt;
 function toast(icon, msg) {
   let t = document.querySelector('.toast'); if (t) t.remove(); clearTimeout(_tt);
@@ -620,22 +636,39 @@ function toast(icon, msg) {
   document.body.appendChild(t);
   _tt = setTimeout(() => { t.classList.add('hide'); setTimeout(() => t.remove(), 300); }, 4000);
 }
-
-// Poll for admin updates (admin may add students mid-session)
-setInterval(() => {
+ 
+// Poll every 30s: re-fetch students.json (picks up new exports without page reload)
+setInterval(async () => {
   try {
-    const raw = JSON.parse(localStorage.getItem('att_students') || '[]');
-    if (raw.length !== students.length) {
-      students = raw.map(s => ({ ...s, descriptor: new Float32Array(s.descriptor) }));
-      renderStudentsList();
-      updateStats();
-      if (students.length) {
-        document.getElementById('no-data').style.display = 'none';
-        setS('ok', `Ready · ${students.length} student(s) loaded.`);
+    const res = await fetch('./students.json', { cache: 'no-cache' });
+    if (res.ok) {
+      const raw = await res.json();
+      if (raw.length !== students.length) {
+        students = raw.map(s => ({ ...s, descriptor: new Float32Array(s.descriptor) }));
+        renderStudentsList();
+        updateStats();
+        if (students.length) {
+          document.getElementById('no-data').style.display = 'none';
+          setS('ok', `Updated · ${students.length} student(s) loaded.`);
+          toast('🔄', `Student list updated: ${students.length} student(s)`);
+        }
+      }
+    } else {
+      // fallback: check localStorage
+      const raw = JSON.parse(localStorage.getItem('att_students') || '[]');
+      if (raw.length !== students.length) {
+        students = raw.map(s => ({ ...s, descriptor: new Float32Array(s.descriptor) }));
+        renderStudentsList();
+        updateStats();
+        if (students.length) {
+          document.getElementById('no-data').style.display = 'none';
+          setS('ok', `Ready · ${students.length} student(s) loaded.`);
+        }
       }
     }
   } catch(e) {}
-}, 5000);
+}, 30000);
 </script>
 </body>
 </html>
+ 
