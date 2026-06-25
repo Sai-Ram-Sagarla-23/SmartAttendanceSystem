@@ -547,6 +547,30 @@ function showUnknown() {
   setS('ok', 'Unknown face detected.');
 }
  
+// ── GOOGLE SHEETS ────────────────────────────────────────────────────────────
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycby49ODs0zbBGGSgCXzHEJASSE8SiAv5FZ-8YRdHTZ0Pp8CIxnkgkovuRAtBWrMzlTWmQA/exec';
+ 
+async function sendToSheets(student, time) {
+  const date = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        roll: student.roll,
+        branch: student.branch,
+        year: student.year,
+        time: time,
+        date: date
+      })
+    });
+    console.log('Sent to Google Sheets: ' + student.roll);
+  } catch(e) {
+    console.warn('Could not send to Google Sheets:', e);
+  }
+}
+ 
 // ── AUTO MARK ────────────────────────────────────────────────────────────────
 function autoMark(student) {
   const now = Date.now();
@@ -561,12 +585,15 @@ function autoMark(student) {
   renderLog();
   updateStats();
  
+  // Send to Google Sheets
+  sendToSheets(student, time);
+ 
   // flash
   document.getElementById('cam-wrap').classList.add('marked-flash');
   setTimeout(() => document.getElementById('cam-wrap').classList.remove('marked-flash'), 800);
  
-  toast('✅', `${student.roll} is PRESENT  ·  ${time}`);
-  setS('ok', `✅ ${student.roll} marked PRESENT at ${time}`);
+  toast('\u2705', student.roll + ' is PRESENT  \u00b7  ' + time);
+  setS('ok', '\u2705 ' + student.roll + ' marked PRESENT at ' + time);
 }
  
 // ── RENDER ───────────────────────────────────────────────────────────────────
@@ -671,4 +698,3 @@ setInterval(async () => {
 </script>
 </body>
 </html>
- 
