@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Attendance Admin — Train Students</title>
+<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;
+  --s1:#0e1117;
+  --s2:#151b25;
+  --s3:#1c2333;
+  --border:#2a3444;
+  --accent:#4f8ef7;
+  --green:#34c97b;
+  --red:#f75858;
+  --yellow:#f7c948;
+  --text:#dce6f5;
+  --muted:#6a7d9a;
+  --r:10px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+/* LOGIN */
+#login-screen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;background:var(--bg);
+}
+.login-box{
+  background:var(--s1);border:1px solid var(--border);border-radius:16px;
+  padding:40px 44px;width:360px;text-align:center;
+}
+.login-box .shield{font-size:48px;margin-bottom:16px}
+.login-box h2{font-size:1.3rem;font-weight:700;margin-bottom:6px}
+.login-box p{font-size:.83rem;color:var(--muted);margin-bottom:28px}
+.login-box input{
+  width:100%;background:var(--s2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;color:var(--text);font-size:.92rem;
+  outline:none;margin-bottom:14px;letter-spacing:.1em;text-align:center;
+}
+.login-box input:focus{border-color:var(--accent)}
+.login-box .err{color:var(--red);font-size:.8rem;margin-top:8px;min-height:18px}
+.btn{
+  width:100%;padding:11px 16px;border:none;border-radius:8px;
+  font-size:.88rem;font-weight:700;cursor:pointer;transition:.15s;
+  letter-spacing:.02em;
+}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover:not(:disabled){background:#3a7ef5}
+.btn-green{background:var(--green);color:#07090f}
+.btn-green:hover:not(:disabled){opacity:.85}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover:not(:disabled){opacity:.85}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-outline:hover{color:var(--text);border-color:var(--text)}
+
+/* APP */
+#app{display:none}
+header{
+  background:var(--s1);border-bottom:1px solid var(--border);
+  padding:0 28px;display:flex;align-items:center;gap:16px;height:58px;
+}
+.logo-badge{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--green));
+  display:grid;place-items:center;font-size:16px;flex-shrink:0;
+}
+header h1{font-size:1rem;font-weight:700;flex:1}
+.header-tag{
+  font-size:.7rem;padding:3px 10px;border-radius:20px;font-weight:700;
+  background:rgba(247,201,72,.15);color:var(--yellow);border:1px solid rgba(247,201,72,.3);
+}
+.header-actions{display:flex;gap:10px}
+.header-actions .btn{width:auto;padding:8px 16px;font-size:.8rem}
+
+#model-bar{
+  background:var(--s2);border-bottom:1px solid var(--border);
+  padding:9px 28px;font-size:.78rem;color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;transition:.4s}
+.dot.ok{background:var(--green)}
+.dot.spin{background:var(--accent);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.layout{display:grid;grid-template-columns:360px 1fr;height:calc(100vh - 95px)}
+
+/* LEFT */
+.panel-left{
+  background:var(--s1);border-right:1px solid var(--border);
+  overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px;
+}
+.section-label{
+  font-size:.68rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.75rem;color:var(--muted);margin-bottom:5px;font-weight:600}
+.field input,.field select{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  border-radius:7px;padding:9px 12px;color:var(--text);font-size:.87rem;outline:none;
+}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field select option{background:var(--s2)}
+
+.drop-zone{
+  border:2px dashed var(--border);border-radius:9px;padding:22px;
+  text-align:center;cursor:pointer;background:var(--bg);transition:.2s;margin-bottom:12px;
+}
+.drop-zone:hover{border-color:var(--accent);background:rgba(79,142,247,.05)}
+.drop-zone .ico{font-size:30px;margin-bottom:6px}
+.drop-zone p{font-size:.78rem;color:var(--muted)}
+.drop-zone strong{color:var(--accent)}
+#file-in{display:none}
+#prev-wrap{display:none;margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+#prev-img{width:100%;max-height:160px;object-fit:cover;display:block}
+.progress-note{
+  font-size:.77rem;color:var(--accent);background:rgba(79,142,247,.08);
+  border:1px solid rgba(79,142,247,.2);border-radius:7px;padding:9px 12px;
+  margin-bottom:10px;display:none;
+}
+.progress-note.show{display:block}
+
+/* Student list */
+.stu-list{display:flex;flex-direction:column;gap:8px}
+.stu-item{
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:10px 12px;display:flex;align-items:center;gap:10px;
+}
+.stu-av{width:38px;height:38px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
+.stu-info{flex:1;min-width:0}
+.stu-info .roll{font-size:.87rem;font-weight:700}
+.stu-info .meta{font-size:.7rem;color:var(--muted)}
+.stu-del{
+  width:26px;height:26px;border-radius:5px;border:none;
+  background:rgba(247,88,88,.12);color:var(--red);cursor:pointer;
+  font-size:.9rem;display:grid;place-items:center;flex-shrink:0;
+}
+.stu-del:hover{background:rgba(247,88,88,.25)}
+.empty{text-align:center;color:var(--muted);font-size:.82rem;padding:20px}
+
+/* RIGHT */
+.panel-right{display:flex;flex-direction:column;overflow:hidden}
+
+.tabs{
+  display:flex;background:var(--s1);border-bottom:1px solid var(--border);padding:0 24px;
+}
+.tab{
+  padding:14px 18px;font-size:.83rem;font-weight:700;color:var(--muted);
+  cursor:pointer;border-bottom:2px solid transparent;transition:.2s;
+}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+.pane{display:none;flex:1;overflow-y:auto;padding:24px;flex-direction:column;gap:16px}
+.pane.on{display:flex}
+
+/* Export pane */
+.export-card{
+  background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:24px;
+}
+.export-card h3{font-size:1rem;font-weight:700;margin-bottom:6px}
+.export-card p{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.export-card .btn{width:auto;padding:10px 22px;font-size:.85rem;margin-bottom:10px}
+.steps{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.step{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;
+}
+.step-num{
+  width:24px;height:24px;border-radius:50%;background:var(--accent);
+  color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;flex-shrink:0;
+}
+.step-body{font-size:.8rem;color:var(--muted);line-height:1.5}
+.step-body strong{color:var(--text)}
+code{
+  display:block;margin-top:8px;background:var(--bg);border:1px solid var(--border);
+  border-radius:6px;padding:8px 12px;font-size:.75rem;color:var(--green);
+  font-family:monospace;overflow-x:auto;
+}
+
+/* Log pane */
+.log-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.log-top h3{font-size:.95rem;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{text-align:left;padding:9px 13px;border-bottom:2px solid var(--border);color:var(--muted);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+td{padding:11px 13px;border-bottom:1px solid var(--border)}
+tr:hover td{background:var(--s2)}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:700}
+.pill.p{background:rgba(52,201,123,.18);color:var(--green)}
+.pill.u{background:rgba(247,88,88,.18);color:var(--red)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;background:var(--s2);border:1px solid var(--border);
+  border-radius:10px;padding:13px 18px;font-size:.83rem;display:flex;gap:10px;align-items:flex-start;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);animation:sup .3s ease;z-index:999;max-width:300px;
+}
+@keyframes sup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.toast.hide{animation:sdn .3s ease forwards}
+@keyframes sdn{to{opacity:0;transform:translateY(12px)}}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="shield">🛡️</div>
+    <h2>Admin Access</h2>
+    <p>Enter your admin password to manage students and training data.</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="btn btn-accent" onclick="doLogin()">Sign In</button>
+    <div class="err" id="pw-err"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div class="logo-badge">🎓</div>
+    <h1>Attendance Admin</h1>
+    <span class="header-tag">ADMIN PANEL</span>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+  <div id="model-bar">
+    <div class="dot spin" id="mdot"></div>
+    <span id="mtext">Loading face recognition models…</span>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: register -->
+    <div class="panel-left">
+
+      <div>
+        <div class="section-label">Register Student</div>
+        <div class="card">
+          <div class="field"><label>Roll Number *</label>
+            <input type="text" id="roll" placeholder="e.g. CS2201"/>
+          </div>
+          <div class="field"><label>Branch *</label>
+            <select id="branch">
+              <option value="">Select Branch</option>
+              <option>CSE</option><option>ECE</option><option>EEE</option>
+              <option>ME</option><option>CE</option><option>IT</option>
+              <option>AIDS</option><option>AIML</option>
+            </select>
+          </div>
+          <div class="field"><label>Year *</label>
+            <select id="year">
+              <option value="">Select Year</option>
+              <option>1st Year</option><option>2nd Year</option>
+              <option>3rd Year</option><option>4th Year</option>
+            </select>
+          </div>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-in').click()">
+            <div class="ico">📷</div>
+            <p><strong>Click to upload</strong> a face photo</p>
+            <p style="margin-top:4px">JPG/PNG · Clear, front-facing</p>
+          </div>
+          <input type="file" id="file-in" accept="image/*"/>
+          <div id="prev-wrap"><img id="prev-img" src="" alt=""/></div>
+          <div class="progress-note" id="prog-note">⏳ Extracting face features…</div>
+          <button class="btn btn-accent" id="reg-btn" disabled onclick="registerStudent()">Register &amp; Train</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">Trained Students (<span id="stu-count">0</span>)</div>
+        <div id="stu-list" class="stu-list"><div class="empty">No students yet.</div></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: tabs -->
+    <div class="panel-right">
+      <div class="tabs">
+        <div class="tab on" onclick="switchTab('export',this)">📤 Export &amp; Deploy</div>
+        <div class="tab" onclick="switchTab('log',this)">📋 Attendance Log</div>
+        <div class="tab" onclick="switchTab('settings',this)">⚙️ Settings</div>
+      </div>
+
+      <!-- EXPORT PANE -->
+      <div class="pane on" id="pane-export">
+        <div class="export-card">
+          <h3>How to deploy this system</h3>
+          <p>The admin trains students here and exports the training data. You then place both files on any static web host (GitHub Pages, Netlify, etc). Students only ever open <strong>index.html</strong> — their face is checked against the exported data automatically.</p>
+          <button class="btn btn-green" id="export-btn" onclick="exportData()">⬇ Download students.json</button>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:6px">Downloads the trained face descriptors for all <strong id="export-count">0</strong> student(s).</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Register all students</strong> using the panel on the left. Upload a clear face photo for each student with their Roll No, Branch and Year.
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Click "Download students.json"</strong> above. This file contains the trained face data — no photos, just math.
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Host both files</strong> on GitHub Pages, Netlify, or any static host — put <code>admin.html</code>, <code>index.html</code> and <code>students.json</code> in the same folder.
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Students open index.html</strong> (your main link). Their face is detected automatically and attendance is marked. <br/>
+              <strong>You open admin.html</strong> to manage students and see the log.
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>When you add more students</strong>, re-export <code>students.json</code> and replace the file on your host. No re-deploy needed — just replace the JSON.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG PANE -->
+      <div class="pane" id="pane-log">
+        <div class="log-top">
+          <h3>Attendance Log</h3>
+          <button class="btn btn-red" style="width:auto;padding:8px 14px;font-size:.78rem" onclick="clearLog()">Clear Log</button>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Roll No</th><th>Branch</th><th>Year</th><th>Time</th><th>Status</th></tr></thead>
+          <tbody id="log-body"><tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">No records yet.</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- SETTINGS PANE -->
+      <div class="pane" id="pane-settings">
+        <div class="export-card">
+          <h3>Admin Password</h3>
+          <p>Change the password used to access this admin panel. The password is stored in localStorage on this device.</p>
+          <div class="field"><label>New Password</label><input type="password" id="new-pw" placeholder="Enter new password"/></div>
+          <div class="field"><label>Confirm Password</label><input type="password" id="conf-pw" placeholder="Confirm new password"/></div>
+          <button class="btn btn-accent" style="width:auto;padding:10px 20px" onclick="changePw()">Update Password</button>
+        </div>
+        <div class="export-card">
+          <h3>Import Training Data</h3>
+          <p>Already have a <code>students.json</code>? Import it here to restore trained students without re-uploading photos.</p>
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)"/>
+          <button class="btn btn-outline" style="width:auto;padding:10px 20px" onclick="document.getElementById('import-file').click()">📂 Import students.json</button>
+        </div>
+        <div class="export-card">
+          <h3>Danger Zone</h3>
+          <p>Permanently delete all trained student data from this device.</p>
+          <button class="btn btn-red" style="width:auto;padding:10px 20px" onclick="nukeAll()">🗑 Wipe All Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PASSWORD ────────────────────────────────────────────────────────────────
+const DEFAULT_PW = 'admin123';
+function getPw(){ return localStorage.getItem('att_admin_pw') || DEFAULT_PW; }
+
+function doLogin(){
+  const v = document.getElementById('pw-input').value;
+  if(v === getPw()){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    init();
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+    setTimeout(()=>document.getElementById('pw-err').textContent='',2000);
+  }
+}
+function doLogout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pw-input').value='';
+}
+function changePw(){
+  const a=document.getElementById('new-pw').value;
+  const b=document.getElementById('conf-pw').value;
+  if(!a){ return toast('⚠️','Enter a new password.'); }
+  if(a!==b){ return toast('⚠️','Passwords do not match.'); }
+  localStorage.setItem('att_admin_pw',a);
+  document.getElementById('new-pw').value='';
+  document.getElementById('conf-pw').value='';
+  toast('✅','Password updated.');
+}
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+let students = [];   // {roll,branch,year,imgSrc,descriptor:[...]}
+let attendLog = [];
+let modelsLoaded = false;
+
+function loadState(){
+  try{ students = JSON.parse(localStorage.getItem('att_students')||'[]'); }catch(e){ students=[]; }
+  try{ attendLog = JSON.parse(localStorage.getItem('att_log')||'[]'); }catch(e){ attendLog=[]; }
+  // descriptors stored as plain arrays, convert back to Float32Array
+  students = students.map(s=>({...s, descriptor: new Float32Array(s.descriptor)}));
+}
+function saveStudents(){
+  const data = students.map(s=>({...s, descriptor: Array.from(s.descriptor)}));
+  localStorage.setItem('att_students', JSON.stringify(data));
+}
+function saveLog(){ localStorage.setItem('att_log', JSON.stringify(attendLog)); }
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+function init(){
+  loadState();
+  renderStudents();
+  renderLog();
+  loadModels();
+}
+
+// ── MODELS ──────────────────────────────────────────────────────────────────
+async function loadModels(){
+  setStatus('spin','Loading face recognition models (first time ~3 MB)…');
+  const poll = setInterval(()=>{
+    if(window.faceapi){ clearInterval(poll); doLoad(); }
+  },200);
+}
+async function doLoad(){
+  try{
+    const URL='https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model';
+    await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(URL),
+      faceapi.nets.faceLandmark68TinyNet.loadFromUri(URL),
+      faceapi.nets.faceRecognitionNet.loadFromUri(URL),
+    ]);
+    modelsLoaded=true;
+    setStatus('ok',`Models ready. ${students.length} student(s) trained.`);
+    document.getElementById('reg-btn').disabled=false;
+  }catch(e){
+    setStatus('err','Failed to load models. Check internet connection.');
+    console.error(e);
+  }
+}
+function setStatus(s,msg){
+  const d=document.getElementById('mdot');
+  d.className='dot'+(s==='ok'?' ok':s==='spin'?' spin':'');
+  document.getElementById('mtext').textContent=msg;
+}
+
+// ── REGISTER ────────────────────────────────────────────────────────────────
+document.getElementById('file-in').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    document.getElementById('prev-img').src=ev.target.result;
+    document.getElementById('prev-wrap').style.display='block';
+  };
+  r.readAsDataURL(f);
+});
+
+async function registerStudent(){
+  if(!modelsLoaded) return alert('Models still loading.');
+  const roll = document.getElementById('roll').value.trim().toUpperCase();
+  const branch = document.getElementById('branch').value;
+  const year = document.getElementById('year').value;
+  const img = document.getElementById('prev-img');
+  if(!roll) return alert('Enter Roll Number.');
+  if(!branch) return alert('Select Branch.');
+  if(!year) return alert('Select Year.');
+  if(!img.src||img.src===location.href) return alert('Upload a photo.');
+
+  if(students.find(s=>s.roll===roll)){
+    if(!confirm(`${roll} already registered. Replace?`)) return;
+    students=students.filter(s=>s.roll!==roll);
+  }
+
+  const prog=document.getElementById('prog-note');
+  prog.classList.add('show');
+  document.getElementById('reg-btn').disabled=true;
+  try{
+    const det=await faceapi
+      .detectSingleFace(img,new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks(true)
+      .withFaceDescriptor();
+    if(!det){ prog.classList.remove('show'); document.getElementById('reg-btn').disabled=false;
+      return alert('No face detected. Use a clear front-facing photo.'); }
+    students.push({roll,branch,year,imgSrc:img.src,descriptor:det.descriptor});
+    saveStudents();
+    prog.classList.remove('show');
+    document.getElementById('reg-btn').disabled=false;
+    resetForm();
+    renderStudents();
+    updateExportCount();
+    setStatus('ok',`${students.length} student(s) trained.`);
+    toast('✅',`${roll} registered!`);
+  }catch(e){
+    prog.classList.remove('show');
+    document.getElementById('reg-btn').disabled=false;
+    console.error(e); alert('Error processing image.');
+  }
+}
+
+function resetForm(){
+  ['roll'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('branch').value='';
+  document.getElementById('year').value='';
+  document.getElementById('file-in').value='';
+  document.getElementById('prev-img').src='';
+  document.getElementById('prev-wrap').style.display='none';
+}
+
+function deleteStudent(roll){
+  if(!confirm(`Remove ${roll}?`)) return;
+  students=students.filter(s=>s.roll!==roll);
+  saveStudents();
+  renderStudents();
+  updateExportCount();
+  toast('🗑',`${roll} removed.`);
+}
+
+function renderStudents(){
+  const el=document.getElementById('stu-list');
+  document.getElementById('stu-count').textContent=students.length;
+  updateExportCount();
+  if(!students.length){ el.innerHTML='<div class="empty">No students yet.</div>'; return; }
+  el.innerHTML=students.map(s=>`
+    <div class="stu-item">
+      <img class="stu-av" src="${s.imgSrc}" alt="${s.roll}"/>
+      <div class="stu-info">
+        <div class="roll">${s.roll}</div>
+        <div class="meta">${s.branch} · ${s.year}</div>
+      </div>
+      <button class="stu-del" onclick="deleteStudent('${s.roll}')" title="Remove">✕</button>
+    </div>`).join('');
+}
+
+// ── EXPORT ──────────────────────────────────────────────────────────────────
+function updateExportCount(){
+  document.getElementById('export-count').textContent=students.length;
+}
+
+function exportData(){
+  if(!students.length) return toast('⚠️','No students to export.');
+  const payload=students.map(s=>({
+    roll:s.roll, branch:s.branch, year:s.year,
+    descriptor:Array.from(s.descriptor)
+  }));
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='students.json';
+  a.click();
+  toast('📤',`Exported ${students.length} student(s) to students.json`);
+}
+
+function importData(input){
+  const f=input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const arr=JSON.parse(ev.target.result);
+      const imported=arr.map(s=>({...s,descriptor:new Float32Array(s.descriptor),imgSrc:s.imgSrc||''}));
+      // merge: existing rolls are preserved, new ones added
+      imported.forEach(s=>{
+        if(!students.find(x=>x.roll===s.roll)) students.push(s);
+      });
+      saveStudents();
+      renderStudents();
+      toast('✅',`Imported ${imported.length} student(s).`);
+    }catch(e){ toast('⚠️','Invalid JSON file.'); }
+  };
+  r.readAsText(f);
+}
+
+// ── LOG ─────────────────────────────────────────────────────────────────────
+function renderLog(){
+  const tb=document.getElementById('log-body');
+  if(!attendLog.length){
+    tb.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">No records yet.</td></tr>';
+    return;
+  }
+  tb.innerHTML=attendLog.map((r,i)=>`
+    <tr>
+      <td style="color:var(--muted)">${attendLog.length-i}</td>
+      <td style="font-weight:700">${r.roll}</td>
+      <td>${r.branch}</td>
+      <td>${r.year}</td>
+      <td style="color:var(--muted)">${r.time}</td>
+      <td><span class="pill p">${r.status}</span></td>
+    </tr>`).join('');
+}
+function clearLog(){
+  if(!attendLog.length||confirm('Clear entire log?')){ attendLog=[]; saveLog(); renderLog(); }
+}
+
+// poll for new log entries (student page writes to localStorage)
+setInterval(()=>{
+  try{
+    const fresh=JSON.parse(localStorage.getItem('att_log')||'[]');
+    if(fresh.length!==attendLog.length){ attendLog=fresh; renderLog(); }
+  }catch(e){}
+},3000);
+
+// ── DANGER ──────────────────────────────────────────────────────────────────
+function nukeAll(){
+  if(!confirm('Wipe ALL student data and logs? This cannot be undone.')) return;
+  students=[]; attendLog=[];
+  localStorage.removeItem('att_students');
+  localStorage.removeItem('att_log');
+  renderStudents(); renderLog();
+  toast('🗑','All data wiped.');
+}
+
+// ── TABS ────────────────────────────────────────────────────────────────────
+function switchTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('pane-'+name).classList.add('on');
+}
+
+// ── TOAST ───────────────────────────────────────────────────────────────────
+let _tt;
+function toast(icon,msg){
+  let t=document.querySelector('.toast'); if(t) t.remove(); clearTimeout(_tt);
+  t=document.createElement('div'); t.className='toast';
+  t.innerHTML=`<span>${icon}</span><span>${msg}</span>`;
+  document.body.appendChild(t);
+  _tt=setTimeout(()=>{ t.classList.add('hide'); setTimeout(()=>t.remove(),300); },3500);
+}
+</script>
+</body>
+</html>
